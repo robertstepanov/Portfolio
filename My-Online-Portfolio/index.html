@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Robert Stepanov Portfolio</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <link rel="icon" type="image/png" href="images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+    
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+         $('#send_message').click(function(e){
+          e.preventDefault();
+          var error = false;
+          var topic = $('#topic').val();
+          var name = $('#name').val();
+          var email = $('#email').val();
+          var subject = $('#subject').val();
+          var message = $('#message').val();
+          if (topic.length == 0){
+           var error = true;
+           $('.contact_topic')
+            .queue(function(){$(this).addClass('error').dequeue();})
+            .delay(5000)
+            .queue(function(){$(this).removeClass('error').dequeue();});
+          } else {
+           $('#topic').removeClass('error');
+          }
+          if (name.length == 0){
+           var error = true;
+           $('.contact_name')
+            .queue(function(){$(this).addClass('error').dequeue();})
+            .queue(function(){$(this).attr('placeholder', 'Please type your name').dequeue();})
+            .delay(5000)
+            .queue(function(){$(this).removeClass('error').dequeue();});
+          } else {
+           $('.contact_name').removeClass('error');
+          }
+          if (email.length == 0 || email.indexOf('@') == '-1'){
+           var error = true;
+           $('.contact_email')
+            .queue(function(){$(this).addClass('error').dequeue();})
+            .queue(function(){$(this).attr('placeholder', 'Please enter your email').dequeue();})
+            .delay(5000)
+            .queue(function(){$(this).removeClass('error').dequeue();})
+           } else {
+            $('.contact_email').removeClass('error')
+         }
+         if (subject.length == 0){
+          var error = true;
+          $('.contact_subject')
+           .queue(function(){$(this).addClass('error').dequeue();})
+           .queue(function(){$(this).attr('placeholder','Please write a subject').dequeue();})
+           .delay(5000)
+           .queue(function(){$(this).removeClass('error').dequeue();});
+         } else {
+          $('.contact_subject').removeClass('error')
+         }
+         if (message.length == 0){
+          var error = true;
+          $('.contact_message')
+           .queue(function(){$(this).addClass('error').dequeue();})
+           .queue(function(){$(this).attr('placeholder', 'Please type your message').dequeue();})
+           .delay(5000)
+           .queue(function(){$(this).removeClass('error').dequeue();});
+         } else {
+          $('.contact_message').removeClass('error');
+         }
+         if (error == true) {
+          $('#send_message')
+           .queue(function(next) { 
+            $(this).html('<object data="http://eliwedel.com/ewpd/demos/jquery-contact-form-v2/error.svg" type="image/svg+xml"></object> Please correct the errors');
+            next();
+            $(this).dequeue();
+           })
+           .delay(5000)
+           .queue(function(next) {
+            $(this).html('Send Message');
+            next();
+            $(this).dequeue();
+           });
+         } else if (error == false){
+          $('#send_message')
+           .html('<object data="http://eliwedel.com/ewpd/demos/jquery-contact-form-v2/send.svg" type="image/svg+xml" height="32" style="margin:-10px -5px!important;"></object> Sending')
+           .delay(2000)
+           .queue(function(next) {
+            $.post("send_email.php", $("#contact_form").serialize(),function(result){
+             var r = result;
+             if (r == 1){
+              $('#contact_form')[0].reset();
+              $('#send_message')
+               .html('<object data="http://eliwedel.com/ewpd/demos/jquery-contact-form-v2/success.svg" type="image/svg+xml"></object> Message Sent')
+               .delay(5000)
+               .queue(function(next) {
+                $(this).html('Send Message'); next();
+               });
+              } else {
+               $('#send_message')
+                .html('<object data="http://eliwedel.com/ewpd/demos/jquery-contact-form-v2/error.svg" type="image/svg+xml"></object> Something went wrong. Please try again later.')
+                .delay(5000).queue(function(next) {
+                 $(this).html('Send Message'); next();
+                });
+               }
+             });
+             next();
+            });
+           }
+          });
+         });
+        </script>
+        
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Robert Stepanov <span>Portfolio</span></div>
+            <nav class="site-nav">
+                <ul>
+                    <li><a href=""><i class="fa fa-home site-nav--icon"></i>Home</a></li>
+                        <li><a href="#aboutMe"><i class="fa fa-info site-nav--icon"></i>About</a></li>
+                        <li><a href=""><i class="fa fa-images site-nav--icon"></i>Portfolio</a></li>
+                        <li><a href="#contactMe"><i class="fa fa-envelope site-nav--icon"></i>Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <div class="hamburger"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-image"></div>
+        <h1>Web Developer and Designer</h1>
+        <div class="button"><a href="#aboutMe">Find out more</a></div>
+    </div>
+
+    <div class="about-section">
+        
+            <h1 id="aboutMe">About <span>Me</span></h1>
+            <div class="portrait-container">
+                <div class="portrait"></div>
+            </div>
+
+            <p class="about-info">Hey there, my name is Bob and I'm a native of the Tampa Bay/St. Pete areaof the west coast of Florida. 
+                After pursuing a minor degree in Biology and with the intention of completing a major in Environmental Science, I decided
+                it wasn't for me. I enjoy the field, but decided I missed the more artistic and creative side of my personality and opted to embark
+                on a new journey. So here I am, a new graduate again, with a Web Design and Development degree and a passion to put it to use.
+                I have always had an interest and ability in drawing and art in general and combined with my love of technology it seemed natural
+                to follow it in this direction. The immediate gratification of seeing something coded and come to fruition is such a fulfilling
+                feeling. My goal is to use my innate imagination and creativity to build things to share with everyone. I sincerely hope that the 
+                things I create bring as much pleasure to people as the joy and fulfillment it brings to myself.
+            </p>
+
+            <div class="resume-buttons">
+                <div class="docx-resume"><a href="assets/ComputerResume.docx">Resum&eacute; <i class="far fa-file-word"></i></a></div>
+                <div class="pdf-resume"><a href="assets/ComputerResume.pdf" target="_blank">Resum&eacute; <i class="far fa-file-pdf"></i></a></div>
+            </div>
+
+            <!-- <p>resum&eacute;</p> -->
+            <!-- <p><span style="color: yellow;">&copy;</span></p> -->
+            <!-- <p><span class="copy">&copy;</span></p> -->
+        
+    </div>
+    <div class="contact-form-section">
+        <h1 id="contactMe">Contact <span>Me</span></h1>
+        <ul>
+            <li class="email-button"><a href="mailto:robert.d.stepanov@gmail.com?subject=Portfolio Visitor">robertdstepanov@gmail.com</a></li>
+            <li class="phone-button"><a href="tel:+17274885471">Call Me @ 727-488-5471</a></li>
+        </ul>
+        <p class="contact-info">Please use the links above or fill out the form below to get in touch.<br>I look forward to hearing from you!</p>
+        <div class="form-background">
+        <div id="jcf">
+            <form action="" method="post" id="contact_form">
+            <select name="topic" id="topic" class="contact_topic">
+            <option value="">Select Prefix</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Miss">Miss</option>
+            </select>
+            <input class="contact_name" type="text" name="name" id="name" placeholder="Name" />
+            <input class="contact_email" type="email" name="email" id="email" placeholder="Email" />
+            <input class="contact_subject" type="text" name="subject" id="subject" placeholder="Subject" />
+            <textarea class="contact_message" name="message" id="message" placeholder="Write your message..."></textarea>
+            <button class="submit" type="submit" id="send_message" style="height: 43px;">Send Message</button>
+            </form>
+        </div>
+        </div>
+       </div>
+    <footer>
+        <p><span class="symbol">&#10026;</span> Created with my own two hands &copy; 2018 Robert Stepanov <span class="symbol">&#10026;</span></p>
+    </footer>
+
+    <script src="main.js"></script>
+    
+</body>
+</html>
